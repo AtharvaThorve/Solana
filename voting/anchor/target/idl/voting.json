@@ -27,6 +27,7 @@
         },
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -152,6 +153,7 @@
         },
         {
           "name": "candidate",
+          "writable": true,
           "pda": {
             "seeds": [
               {
