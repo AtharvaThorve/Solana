@@ -11,17 +11,23 @@ const votingAddress = new PublicKey(
 );
 
 describe("voting", () => {
-    it("Initialize Poll", async () => {
-        const context = await startAnchor(
+    let context;
+    let provider;
+    let votingProgram: anchor.Program<Voting>;
+
+    beforeAll(async () => {
+        context = await startAnchor(
             "",
             [{ name: "voting", programId: votingAddress }],
             []
         );
 
-        const provider = new BankrunProvider(context);
+        provider = new BankrunProvider(context);
 
-        const votingProgram = new Program<Voting>(IDL, provider);
+        votingProgram = new Program<Voting>(IDL, provider);
+    });
 
+    it("Initialize Poll", async () => {
         await votingProgram.methods
             .initializePoll(
                 new anchor.BN(1),
@@ -46,4 +52,48 @@ describe("voting", () => {
         );
         expect(poll.pollStart.toNumber()).toBeLessThan(poll.pollEnd.toNumber());
     });
+
+    it("Initialize Candidate", async () => {
+        await votingProgram.methods
+            .initializeCandidate("Creamy", new anchor.BN(1))
+            .rpc();
+
+        await votingProgram.methods
+            .initializeCandidate("Crunchy", new anchor.BN(1))
+            .rpc();
+
+        const [crunchyAddress] = PublicKey.findProgramAddressSync(
+            [
+                new anchor.BN(1).toArrayLike(Buffer, "le", 8),
+                Buffer.from("Crunchy"),
+            ],
+            votingAddress
+        );
+
+        const [creamyAddress] = PublicKey.findProgramAddressSync(
+            [
+                new anchor.BN(1).toArrayLike(Buffer, "le", 8),
+                Buffer.from("Creamy"),
+            ],
+            votingAddress
+        );
+
+        const crunchy = await votingProgram.account.candidate.fetch(
+            crunchyAddress
+        );
+        const creamy = await votingProgram.account.candidate.fetch(
+            creamyAddress
+        );
+
+        console.log(crunchy);
+        console.log(creamy);
+
+        expect(crunchy.candidateName).toEqual("Crunchy");
+        expect(crunchy.candidateVotes.toNumber()).toEqual(0);
+
+        expect(creamy.candidateName).toEqual("Creamy");
+        expect(creamy.candidateVotes.toNumber()).toEqual(0);
+    });
+
+    it("Vote", async () => {});
 });
