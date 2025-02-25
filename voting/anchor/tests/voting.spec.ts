@@ -62,6 +62,11 @@ describe("voting", () => {
             .initializeCandidate("Crunchy", new anchor.BN(1))
             .rpc();
 
+        const [pollAddress] = PublicKey.findProgramAddressSync(
+            [new anchor.BN(1).toArrayLike(Buffer, "le", 8)],
+            votingAddress
+        );
+
         const [crunchyAddress] = PublicKey.findProgramAddressSync(
             [
                 new anchor.BN(1).toArrayLike(Buffer, "le", 8),
@@ -78,6 +83,8 @@ describe("voting", () => {
             votingAddress
         );
 
+        const poll = await votingProgram.account.poll.fetch(pollAddress);
+
         const crunchy = await votingProgram.account.candidate.fetch(
             crunchyAddress
         );
@@ -93,6 +100,8 @@ describe("voting", () => {
 
         expect(creamy.candidateName).toEqual("Creamy");
         expect(creamy.candidateVotes.toNumber()).toEqual(0);
+
+        expect(poll.candidateAmount.toNumber()).toEqual(2);
     });
 
     it("Vote", async () => {
