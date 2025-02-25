@@ -95,5 +95,38 @@ describe("voting", () => {
         expect(creamy.candidateVotes.toNumber()).toEqual(0);
     });
 
-    it("Vote", async () => {});
+    it("Vote", async () => {
+        await votingProgram.methods.vote("Crunchy", new anchor.BN(1)).rpc();
+
+        await votingProgram.methods.vote("Creamy", new anchor.BN(1)).rpc();
+
+        const [crunchyAddress] = PublicKey.findProgramAddressSync(
+            [
+                new anchor.BN(1).toArrayLike(Buffer, "le", 8),
+                Buffer.from("Crunchy"),
+            ],
+            votingAddress
+        );
+
+        const [creamyAddress] = PublicKey.findProgramAddressSync(
+            [
+                new anchor.BN(1).toArrayLike(Buffer, "le", 8),
+                Buffer.from("Creamy"),
+            ],
+            votingAddress
+        );
+
+        const crunchy = await votingProgram.account.candidate.fetch(
+            crunchyAddress
+        );
+        const creamy = await votingProgram.account.candidate.fetch(
+            creamyAddress
+        );
+
+        console.log(crunchy);
+        console.log(creamy);
+
+        expect(crunchy.candidateVotes.toNumber()).toEqual(1);
+        expect(creamy.candidateVotes.toNumber()).toEqual(1);
+    });
 });
