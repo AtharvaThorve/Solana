@@ -7,6 +7,9 @@ This repository contains various Solana blockchain projects demonstrating differ
 ### 1. Favorites App
 A simple program demonstrating basic account management and state persistence on Solana. [View Details](./favorites/README.md)
 
+### 2. Voting App
+A program that allows users to create and participate in polls on-chain. [View Details](./voting/README.md)
+
 ## Getting Started
 
 ### Prerequisites
@@ -34,16 +37,9 @@ avm use latest
 
 ```
 solana/
-└──  favorites/           # Favorites management program
+├── favorites/           # Favorites management program
+└── voting/              # Voting program
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## Learning Resources
 
