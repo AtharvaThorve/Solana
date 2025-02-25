@@ -1,94 +1,102 @@
-# voting
+# Voting - Solana Program
 
-## Getting Started
+A Solana program that allows users to create and participate in polls on-chain.
 
-### Prerequisites
+## Description
 
-- Node v18.18.0 or higher
+This program demonstrates Solana program development using the Anchor framework. Users can:
+- Create a poll with a unique ID, description, start time, and end time
+- Vote on existing polls
 
-- Rust v1.77.2 or higher
-- Anchor CLI 0.30.1 or higher
-- Solana CLI 1.18.17 or higher
+## Technologies Used
 
-### Installation
+- Solana
+- Anchor Framework
+- TypeScript
+- Rust
 
-#### Clone the repo
+## Prerequisites
 
-```shell
-git clone <repo-url>
-cd <repo-name>
+- [Solana Tool Suite](https://docs.solana.com/cli/install-solana-cli-tools)
+- [Anchor](https://www.anchor-lang.com/docs/installation)
+- [Node.js](https://nodejs.org/)
+- [Rust](https://rustup.rs/)
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd voting
 ```
 
-#### Install Dependencies
+2. Install dependencies:
 
-```shell
-pnpm install
+```bash
+npm install
 ```
 
-#### Start the web app
+## Building
 
-```
-pnpm dev
-```
+Build the Solana program:
 
-## Apps
-
-### anchor
-
-This is a Solana program written in Rust using the Anchor framework.
-
-#### Commands
-
-You can use any normal anchor commands. Either move to the `anchor` directory and run the `anchor` command or prefix the command with `pnpm`, eg: `pnpm anchor`.
-
-#### Sync the program id:
-
-Running this command will create a new keypair in the `anchor/target/deploy` directory and save the address to the Anchor config file and update the `declare_id!` macro in the `./src/lib.rs` file of the program.
-
-You will manually need to update the constant in `anchor/lib/counter-exports.ts` to match the new program id.
-
-```shell
-pnpm anchor keys sync
+```bash
+anchor build
 ```
 
-#### Build the program:
+## Testing
 
-```shell
-pnpm anchor-build
+Run the test suite:
+
+```bash
+anchor test --skip-deploy --skip-local-validator
 ```
 
-#### Start the test validator with the program deployed:
+## Program Structure
 
-```shell
-pnpm anchor-localnet
+- `voting/programs/voting/src/lib.rs`: Main program logic
+- `voting/tests/anchor.ts`: Integration tests
+- `voting/client/client.ts`: Client-side interaction example
+
+## Usage
+
+1. Start a local Solana validator:
+
+```bash
+solana-test-validator
 ```
 
-#### Run the tests
+2. Deploy the program:
 
-```shell
-pnpm anchor-test
+```bash
+anchor deploy
 ```
 
-#### Deploy to Devnet
+3. Run the client:
 
-```shell
-pnpm anchor deploy --provider.cluster devnet
+```bash
+npm run client
 ```
 
-### web
+## Account Structure
 
-This is a React app that uses the Anchor generated client to interact with the Solana program.
-
-#### Commands
-
-Start the web app
-
-```shell
-pnpm dev
+```rust
+pub struct Poll {
+    pub poll_id: u64,
+    pub description: String,
+    pub poll_start: u64,
+    pub poll_end: u64,
+}
 ```
 
-Build the web app
+## Features
 
-```shell
-pnpm build
-```
+- PDA (Program Derived Address) based account creation
+- Account initialization with default values
+- Update functionality for poll data
+- String and vector handling in Solana programs
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details
