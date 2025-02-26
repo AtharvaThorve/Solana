@@ -96,6 +96,7 @@ pub struct Poll {
 - Account initialization with default values
 - Update functionality for poll data
 - String and vector handling in Solana programs
+- Integration with Solana Actions and Blinks
 
 ## License
 
